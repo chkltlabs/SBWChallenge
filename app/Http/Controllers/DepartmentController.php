@@ -21,6 +21,7 @@ class DepartmentController extends BaseController
 
     function index()
     {
+        $this->viewData['pageTitle'] = "All Departments";
         $this->viewData['depts'] = Department::all();
         return view('home.departments.index', $this->viewData);
     }
@@ -28,11 +29,14 @@ class DepartmentController extends BaseController
     function view(Request $request, $id)
     {
         $this->viewData['dept'] = Department::find($id);
+        $name = $this->viewData['dept']->departmentName;
+        $this->viewData['pageTitle'] = "Details of Department: $name";
         return view('home.departments.view', $this->viewData);
     }
 
     function create()
     {
+        $this->viewData['pageTitle'] = "Create New Department";
         return view('home.departments.create', $this->viewData);
     }
 
@@ -59,6 +63,8 @@ class DepartmentController extends BaseController
         $this->viewData['dept'] = Department::find($id);
 
         if($this->viewData['dept']){
+            $name = $this->viewData['dept']->departmentName;
+            $this->viewData['pageTitle'] = "Edit Department: $name";
             return view('home.departments.edit', $this->viewData);
         }else{
             return redirect()->back()->withErrors('Department record could not be found, please contact your admin');

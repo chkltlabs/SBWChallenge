@@ -21,6 +21,7 @@ class EmployeeController extends BaseController
 
     function index()
     {
+        $this->viewData['pageTitle'] = "All Employees";
         $this->viewData['departments'] = Department::all();
         $this->viewData['employees'] = Employee::all();
         return view('home.employees.index', $this->viewData);
@@ -29,11 +30,14 @@ class EmployeeController extends BaseController
     function view(Request $request, $id)
     {
         $this->viewData['employee'] = Employee::find($id);
+        $name = $this->viewData['employee']->name;
+        $this->viewData['pageTitle'] = "Details of Employee: $name";
         return view('home.employees.view', $this->viewData);
     }
 
     function create()
     {
+        $this->viewData['pageTitle'] = "Create New Employee Record";
         $this->viewData['departments'] = Department::all();
         return view('home.employees.create', $this->viewData);
     }
@@ -63,6 +67,8 @@ class EmployeeController extends BaseController
         $this->viewData['employee'] = Employee::find($id);
 
         if($this->viewData['employee']){
+            $name = $this->viewData['employee']->name;
+            $this->viewData['pageTitle'] = "Edit Details for Employee: $name";
             //redirect to view for newly created employee record
             return view('home.employees.edit', $this->viewData);
         }else{
